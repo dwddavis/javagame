@@ -21,20 +21,21 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	
 	public Game() {
-		new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
 		
 		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
+		
+		
 		r = new Random();
 		
-		for(int i = 0; i < 50; i++) {
-			handler.addObject(new Player(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Player));
-		}
-		handler.addObject(new Player(100, 100, ID.Player));
-		handler.addObject(new Player(200, 200, ID.Player));
+		handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player));
+		handler.addObject(new BasicEnemy(WIDTH/2-32, HEIGHT/2-32, ID.BasicEnemy));
+		
+	
 	}
-	
-	
-	
+		
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
@@ -55,7 +56,7 @@ public class Game extends Canvas implements Runnable{
 	public void run() {
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
-		double ns = 100000000 / amountOfTicks;
+		double ns = 1000000000 / amountOfTicks;
 		double delta = 0; 
 		long timer = System.currentTimeMillis();
 		int frames = 0;
@@ -73,7 +74,7 @@ public class Game extends Canvas implements Runnable{
 			
 			if(System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				System.out.println("FPS: " + frames);
+				//System.out.println("FPS: " + frames);
 				frames = 0;
 			}
 			
